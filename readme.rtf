@@ -1,0 +1,299 @@
+--intro--
+
+winshell is a way to automate almost any feature in windows,
+even more so than tools such as VB script, powershell.
+
+The idea came from seeing the rather mysterious rundll32 
+commands, as well as the fact that I liked tinkering with how
+the OS looked and behaved, something which win XP can do in
+amazing detail although doing it in winapi C is kind of 
+dark art because it involves a lot of obscure information
+and reverse engineering, as well as over a decade of C
+experience.
+
+I therefore began to learn the C programming
+language and decided to make a language which is like winapi
+but where it's stripped down to make it easier to use, however
+without slowing it down too much, I also knew that you could
+type batch and rundll32 commands either in notepad, cmd, or 
+the start menu's 'run' dialog and so the idea was born.
+
+The idea was, to have C like language but where the OS could
+understand it itself, instead of having to install a C compiler.
+The language allows the user to automate things which are not
+possible in, (as far as I have seen), any other language or tool.
+
+Also since control panel is so well organized, and I was fascinated
+with seeing how the rundll32 commands worked to do such things
+that were off-limits to say, regedit, or batch scripting, I decided to 
+just extend the rundll32 syntax but call the interpreter $ and still
+allow the rundll32 commands to work on it as well as more.
+
+--changelog--
+
+now supports one paramater, we do not need to use two because 
+
+--todo--
+
+issue #1: taskbar is overlapping with
+maximized window title bars if position is set to 0
+
+Issue #2: taskbar reverts to 
+bottom of screen (default position)
+when a start menu item in the start 
+panel is clicked.
+
+Issue #3: does not work if you have
+a vertical taskbar - windows XP 
+natively support having a vertical 
+taskbar on the left or right of the 
+screen, you do this by unlocking the
+taskbar then holding shift while 
+left clicking and dragging the taskbar.
+
+Xpos (in pixels)
+
+--usage--
+
+$ control desk UndockTaskBar(0 /*Xpos*/); //example
+just 'control' or 'desk' also works 
+but everything after it is case-sensitive:
+
+$ control.exe desk.cpl, UndockTaskBar(99); //example 
+
+There should be some macros that just
+expand to be what the "top" and "bottom"
+of the screen is, but this value depends
+on the display type and screen resolution
+of windows but it means that users do not
+have to guess or awkwardly figure out 
+what the top or bottom
+of their screen is in pixels.
+
+You can also type and even modify commands such as:
+control.exe desk.cpl, UndockTaskBar(99,155);
+as native code:
+
+$ !! SetWindowPos(hWnd,0, 0,valint(sParm) , 0,0 , SWP_NOSIZE or SWP_NOZORDER or SWP_NOSENDCHANGING)
+
+where the !! Means to not treat the first parameter as a file such as control.exe
+but to tell the interpreter that
+it should, instead run a native block of code.
+
+Native code is based on WINAPI C.
+
+*note, all the above syntax may be subject to change in future versions.
+
+rundll32.exe advapi32.dll, ProcessIdleTasks
+rundll32.exe devmgr.dll, DeviceManager_Execute
+rundll32.exe inetcpl.cpl, ClearMyTracksByProcess 1
+rundll32.exe inetcpl.cpl, ClearMyTracksByProcess 16
+rundll32.exe inetCpl.cpl, ClearMyTracksByProcess 16384
+rundll32.exe inetcpl.cpl, ClearMyTracksByProcess 2
+rundll32.exe inetcpl.cpl, ClearMyTracksByProcess 255
+rundll32.exe inetcpl.cpl, ClearMyTracksByProcess 32
+rundll32.exe inetcpl.cpl, ClearMyTracksByProcess 4351
+rundll32.exe inetcpl.cpl, ClearMyTracksByProcess 8
+rundll32.exe keymgr.dll, KRShowKeyMgr
+rundll32.exe keymgr.dll, PRShowSaveWizardExW
+rundll32.exe msrating.dll, RatingSetupUI
+rundll32.exe newdev.dll, DeviceInternetSettingUi
+rundll32.exe powrprof.dll, SetSuspendState
+rundll32.exe printui.dll, PrintUIEntry /?
+rundll32.exe pwlauncher.dll, ShowPortableWorkspaceLauncherConfigurationUX
+rundll32.exe shdocvw.dll, DoOrganizeFavDlg
+rundll32.exe shell32.dll, Control_Options 2
+rundll32.exe shell32.dll, Control_RunDLL
+rundll32.exe shell32.dll, Control_RunDLL %SystemRoot%\System32\Speech\SpeechUX\sapi.cpl,,1
+rundll32.exe shell32.dll, Control_RunDLL access.cpl
+rundll32.exe shell32.dll, Control_RunDLL access.cpl,,3
+rundll32.exe shell32.dll, Control_RunDLL appwiz.cpl,,0
+rundll32.exe shell32.dll, Control_RunDLL appwiz.cpl,,2
+rundll32.exe shell32.dll, Control_RunDLL appwiz.cpl,,3
+rundll32.exe shell32.dll, Control_RunDLL cscui.dll,,0
+rundll32.exe shell32.dll, Control_RunDLL cscui.dll,,1
+rundll32.exe shell32.dll, Control_RunDLL cscui.dll,,2
+rundll32.exe shell32.dll, Control_RunDLL cscui.dll,,3
+rundll32.exe shell32.dll, Control_RunDLL desk.cpl
+rundll32.exe shell32.dll, Control_RunDLL desk.cpl,,0
+rundll32.exe shell32.dll, Control_RunDLL desk.cpl,,1
+rundll32.exe shell32.dll, Control_RunDLL desk.cpl,,2
+rundll32.exe shell32.dll, Control_RunDLL desk.cpl,Advanced,@Advanced
+rundll32.exe shell32.dll, Control_RunDLL firewall.cpl
+rundll32.exe shell32.dll, Control_RunDLL hotPlug.dll
+rundll32.exe shell32.dll, Control_RunDLL inetcpl.cpl
+rundll32.exe shell32.dll, Control_RunDLL inetcpl.cpl,,1
+rundll32.exe shell32.dll, Control_RunDLL inetcpl.cpl,,2
+rundll32.exe shell32.dll, Control_RunDLL inetcpl.cpl,,3
+rundll32.exe shell32.dll, Control_RunDLL inetcpl.cpl,,4
+rundll32.exe shell32.dll, Control_RunDLL inetcpl.cpl,,5
+rundll32.exe shell32.dll, Control_RunDLL inetcpl.cpl,,6
+rundll32.exe shell32.dll, Control_RunDLL input.dll,,{C07337D3-DB2C-4D0B-9A93-B722A6C106E2}
+rundll32.exe shell32.dll, Control_RunDLL intl.cpl,,0
+rundll32.exe shell32.dll, Control_RunDLL intl.cpl,,1
+rundll32.exe shell32.dll, Control_RunDLL intl.cpl,,2
+rundll32.exe shell32.dll, Control_RunDLL irprops.cpl
+rundll32.exe shell32.dll, Control_RunDLL joy.cpl
+rundll32.exe shell32.dll, Control_RunDLL main.cpl
+rundll32.exe shell32.dll, Control_RunDLL main.cpl @0,0
+rundll32.exe shell32.dll, Control_RunDLL main.cpl @1
+rundll32.exe shell32.dll, Control_RunDLL main.cpl,,1
+rundll32.exe shell32.dll, Control_RunDLL main.cpl,,2
+rundll32.exe shell32.dll, Control_RunDLL main.cpl,,3
+rundll32.exe shell32.dll, Control_RunDLL main.cpl,,4
+rundll32.exe shell32.dll, Control_RunDLL mmsys.cpl,,0
+rundll32.exe shell32.dll, Control_RunDLL mmsys.cpl,,1
+rundll32.exe shell32.dll, Control_RunDLL mmsys.cpl,,2
+rundll32.exe shell32.dll, Control_RunDLL mmsys.cpl,,3
+rundll32.exe shell32.dll, Control_RunDLL ncpa.cpl
+rundll32.exe shell32.dll, Control_RunDLL netSetup.cpl
+rundll32.exe shell32.dll, Control_RunDLL netSetup.cpl,@0,WNSW
+rundll32.exe shell32.dll, Control_RunDLL nusrmgr.cpl
+rundll32.exe shell32.dll, Control_RunDLL odbccp32.cpl
+rundll32.exe shell32.dll, Control_RunDLL powercfg.cpl
+rundll32.exe shell32.dll, Control_RunDLL srchadmin.dll
+rundll32.exe shell32.dll, Control_RunDLL sysdm.cpl,,1
+rundll32.exe shell32.dll, Control_RunDLL sysdm.cpl,,2
+rundll32.exe shell32.dll, Control_RunDLL sysdm.cpl,,3
+rundll32.exe shell32.dll, Control_RunDLL sysdm.cpl,,4
+rundll32.exe shell32.dll, Control_RunDLL sysdm.cpl,,5
+rundll32.exe shell32.dll, Control_RunDLL tabletpc.cpl
+rundll32.exe shell32.dll, Control_RunDLL timedate.cpl
+rundll32.exe shell32.dll, Control_RunDLL timedate.cpl,,1
+rundll32.exe shell32.dll, Control_RunDLL wscui.cpl
+rundll32.exe shell32.dll, OpenAs_RunDLL Any_File-name.ext
+rundll32.exe shell32.dll, Options_RunDLL 0
+rundll32.exe shell32.dll, Options_RunDLL 1
+rundll32.exe shell32.dll, Options_RunDLL 2
+rundll32.exe shell32.dll, Options_RunDLL 3
+rundll32.exe shell32.dll, Options_RunDLL 7
+rundll32.exe shell32.dll, ShellAbout
+rundll32.exe shell32.dll, ShellAboutW
+rundll32.exe shell32.dll, SHHelpShortcuts_RunDLL AddPrinter
+rundll32.exe shell32.dll, SHHelpShortcuts_RunDLL Connect
+rundll32.exe shell32.dll, SHHelpShortcuts_RunDLL FontsFolder
+rundll32.exe shell32.dll, SHHelpShortcuts_RunDLL PrintersFolder
+rundll32.exe shwebsvc.dll, AddNetPlaceRunDll
+rundll32.exe sysdm.cpl, EditEnvironmentVariables
+rundll32.exe tcpmonui.dll, LocalAddPortUI
+rundll32.exe user32.dll, LockWorkStation
+rundll32.exe user32.dll, SwapMouseButton
+
+-- as winshell commands:--
+
+$ advapi32.dll, ProcessIdleTasks
+$ devmgr.dll, DeviceManager_Execute
+$ inetcpl.cpl, ClearMyTracksByProcess 1
+$ inetcpl.cpl, ClearMyTracksByProcess 16
+$ inetCpl.cpl, ClearMyTracksByProcess 16384
+$ inetcpl.cpl, ClearMyTracksByProcess 2
+$ inetcpl.cpl, ClearMyTracksByProcess 255
+$ inetcpl.cpl, ClearMyTracksByProcess 32
+$ inetcpl.cpl, ClearMyTracksByProcess 4351
+$ inetcpl.cpl, ClearMyTracksByProcess 8
+$ keymgr.dll, KRShowKeyMgr
+$ keymgr.dll, PRShowSaveWizardExW
+$ msrating.dll, RatingSetupUI
+$ newdev.dll, DeviceInternetSettingUi
+$ powrprof.dll, SetSuspendState
+$ printui.dll, PrintUIEntry /?
+$ pwlauncher.dll, ShowPortableWorkspaceLauncherConfigurationUX
+$ shdocvw.dll, DoOrganizeFavDlg
+$ shell32.dll, Control_Options 2
+$ shell32.dll, Control_RunDLL
+$ shell32.dll, Control_RunDLL %SystemRoot%\System32\Speech\SpeechUX\sapi.cpl,,1
+$ shell32.dll, Control_RunDLL access.cpl
+$ shell32.dll, Control_RunDLL access.cpl,,3
+$ shell32.dll, Control_RunDLL appwiz.cpl,,0
+$ shell32.dll, Control_RunDLL appwiz.cpl,,2
+$ shell32.dll, Control_RunDLL appwiz.cpl,,3
+$ shell32.dll, Control_RunDLL cscui.dll,,0
+$ shell32.dll, Control_RunDLL cscui.dll,,1
+$ shell32.dll, Control_RunDLL cscui.dll,,2
+$ shell32.dll, Control_RunDLL cscui.dll,,3
+$ shell32.dll, Control_RunDLL desk.cpl
+$ shell32.dll, Control_RunDLL desk.cpl,,0
+$ shell32.dll, Control_RunDLL desk.cpl,,1
+$ shell32.dll, Control_RunDLL desk.cpl,,2
+$ shell32.dll, Control_RunDLL desk.cpl,Advanced,@Advanced
+$ shell32.dll, Control_RunDLL firewall.cpl
+$ shell32.dll, Control_RunDLL hotPlug.dll
+$ shell32.dll, Control_RunDLL inetcpl.cpl
+$ shell32.dll, Control_RunDLL inetcpl.cpl,,1
+$ shell32.dll, Control_RunDLL inetcpl.cpl,,2
+$ shell32.dll, Control_RunDLL inetcpl.cpl,,3
+$ shell32.dll, Control_RunDLL inetcpl.cpl,,4
+$ shell32.dll, Control_RunDLL inetcpl.cpl,,5
+$ shell32.dll, Control_RunDLL inetcpl.cpl,,6
+$ shell32.dll, Control_RunDLL input.dll,,{C07337D3-DB2C-4D0B-9A93-B722A6C106E2}
+$ shell32.dll, Control_RunDLL intl.cpl,,0
+$ shell32.dll, Control_RunDLL intl.cpl,,1
+$ shell32.dll, Control_RunDLL intl.cpl,,2
+$ shell32.dll, Control_RunDLL irprops.cpl
+$ shell32.dll, Control_RunDLL joy.cpl
+$ shell32.dll, Control_RunDLL main.cpl
+$ shell32.dll, Control_RunDLL main.cpl @0,0
+$ shell32.dll, Control_RunDLL main.cpl @1
+$ shell32.dll, Control_RunDLL main.cpl,,1
+$ shell32.dll, Control_RunDLL main.cpl,,2
+$ shell32.dll, Control_RunDLL main.cpl,,3
+$ shell32.dll, Control_RunDLL main.cpl,,4
+$ shell32.dll, Control_RunDLL mmsys.cpl,,0
+$ shell32.dll, Control_RunDLL mmsys.cpl,,1
+$ shell32.dll, Control_RunDLL mmsys.cpl,,2
+$ shell32.dll, Control_RunDLL mmsys.cpl,,3
+$ shell32.dll, Control_RunDLL ncpa.cpl
+$ shell32.dll, Control_RunDLL netSetup.cpl
+$ shell32.dll, Control_RunDLL netSetup.cpl,@0,WNSW
+$ shell32.dll, Control_RunDLL nusrmgr.cpl
+$ shell32.dll, Control_RunDLL odbccp32.cpl
+$ shell32.dll, Control_RunDLL powercfg.cpl
+$ shell32.dll, Control_RunDLL srchadmin.dll
+$ shell32.dll, Control_RunDLL sysdm.cpl,,1
+$ shell32.dll, Control_RunDLL sysdm.cpl,,2
+$ shell32.dll, Control_RunDLL sysdm.cpl,,3
+$ shell32.dll, Control_RunDLL sysdm.cpl,,4
+$ shell32.dll, Control_RunDLL sysdm.cpl,,5
+$ shell32.dll, Control_RunDLL tabletpc.cpl
+$ shell32.dll, Control_RunDLL timedate.cpl
+$ shell32.dll, Control_RunDLL timedate.cpl,,1
+$ shell32.dll, Control_RunDLL wscui.cpl
+$ shell32.dll, OpenAs_RunDLL Any_File-name.ext
+$ shell32.dll, Options_RunDLL 0
+$ shell32.dll, Options_RunDLL 1
+$ shell32.dll, Options_RunDLL 2
+$ shell32.dll, Options_RunDLL 3
+$ shell32.dll, Options_RunDLL 7
+$ shell32.dll, ShellAbout
+$ shell32.dll, ShellAboutW
+$ shell32.dll, SHHelpShortcuts_RunDLL AddPrinter
+$ shell32.dll, SHHelpShortcuts_RunDLL Connect
+$ shell32.dll, SHHelpShortcuts_RunDLL FontsFolder
+$ shell32.dll, SHHelpShortcuts_RunDLL PrintersFolder
+$ shwebsvc.dll, AddNetPlaceRunDll
+$ sysdm.cpl, EditEnvironmentVariables
+$ tcpmonui.dll, LocalAddPortUI
+$ user32.dll, LockWorkStation
+$ user32.dll, SwapMouseButton
+
+For to use ordinals instead of parameters you type the following:
+
+$ somefile.dll,#n
+
+where n is some number, here is a working example:
+
+$ shell32.dll,#355
+
+or as rundll32:
+
+rundll32.exe shell32.dll,#355
+
+The above command has missing parameters that you would specify in your WINAPI program, hence the weird
+characters in the dialog box, because I did not specify any parameters since I just used rundll32 instead of 
+doing it in WINAPI.
+
+This opens an 'About Windows' dialog box.
+
+$ shell32.dll,#54 
+
+This opens a 'Logoff Windows' dialog box.
