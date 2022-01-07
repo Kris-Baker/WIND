@@ -1,37 +1,26 @@
---intro--
+WIND is an extention of the batch scripting language which has its own intepreter called $. 
+The idea of WIND is to use native windows code (called WINAPI) to extend the excellant GUI 
+features of XP into a scripting language which is syntactically simular to the peculiar 
+rundll32 commands, rundll32 commands are often in a gray area between a publically
+accessable scripting language, and an internal windows mechanism which should not be known
+about much. (since XP is after all, a closed source OS).
 
-winshell is a way to automate almost any feature in windows,
-even more so than tools such as VB script, powershell.
+This means that the command set that $ executes is also open source, since it is in C
+But the command syntax itself is designed in a way that feels as integrated into XP
+as possible.
 
-The idea came from seeing the rather mysterious rundll32 
-commands, as well as the fact that I liked tinkering with how
-the OS looked and behaved, something which win XP can do in
-amazing detail although doing it in winapi C is kind of 
-dark art because it involves a lot of obscure information
-and reverse engineering, as well as over a decade of C
-experience.
+For example, since the interpreter is simply an exe file, but the .exe extension is optional,
+and even the path is optional, as long as the file is in certain windows directories, we can 
+simply use the start->run (winkey+r) dialog as a quick and easy way to run a WIND command on 
+the fly, but also we can run $ from a script file, or in command prompt directly.
 
-I therefore began to learn the C programming
-language and decided to make a language which is like winapi
-but where it's stripped down to make it easier to use, however
-without slowing it down too much, I also knew that you could
-type batch and rundll32 commands either in notepad, cmd, or 
-the start menu's 'run' dialog and so the idea was born.
-
-The idea was, to have C like language but where the OS could
-understand it itself, instead of having to install a C compiler.
-The language allows the user to automate things which are not
-possible in, (as far as I have seen), any other language or tool.
-
-Also since control panel is so well organized, and I was fascinated
-with seeing how the rundll32 commands worked to do such things
-that were off-limits to say, regedit, or batch scripting, I decided to 
-just extend the rundll32 syntax but call the interpreter $ and still
-allow the rundll32 commands to work on it as well as more.
+Being able to do just about anything you can do with regedit, explorer, controrl panel,
+gpedit, mmc, etc etc in a simple scripting language makes the OS extremley flexable, fast, and
+reliable because these principles are already bakes into XPs' GUI.
 
 --changelog--
 
-now supports one paramater, we do not need to use two because 
+now supports a paramater for where to move the taskbar, vertically on the screen.
 
 --todo--
 
@@ -51,15 +40,14 @@ screen, you do this by unlocking the
 taskbar then holding shift while 
 left clicking and dragging the taskbar.
 
-Xpos (in pixels)
+--usage examples--
 
---usage--
+    $ control desk UndockTaskBar(0 /*Xpos*/);
 
-$ control desk UndockTaskBar(0 /*Xpos*/); //example
 just 'control' or 'desk' also works 
 but everything after it is case-sensitive:
 
-$ control.exe desk.cpl, UndockTaskBar(99); //example 
+    $ control.exe desk.cpl, UndockTaskBar(99);
 
 There should be some macros that just
 expand to be what the "top" and "bottom"
@@ -71,16 +59,15 @@ what the top or bottom
 of their screen is in pixels.
 
 You can also type and even modify commands such as:
-control.exe desk.cpl, UndockTaskBar(99,155);
+    $ control.exe desk.cpl, UndockTaskBar(0);
+    
 as native code:
 
-$ !! SetWindowPos(hWnd,0, 0,valint(sParm) , 0,0 , SWP_NOSIZE or SWP_NOZORDER or SWP_NOSENDCHANGING)
+    $ !! SetWindowPos(hWnd,0, 0,valint(sParm) , 0,0 , SWP_NOSIZE or SWP_NOZORDER or SWP_NOSENDCHANGING)
 
 where the !! Means to not treat the first parameter as a file such as control.exe
 but to tell the interpreter that
 it should, instead run a native block of code.
-
-Native code is based on WINAPI C.
 
 *note, all the above syntax may be subject to change in future versions.
 
